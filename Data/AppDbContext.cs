@@ -8,7 +8,7 @@ namespace workHome.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
         { }
 
-        DbSet<PokemonModel> pokemons {  get; set; }
+        public DbSet<PokemonModel> pokemons {  get; set; }
     };
 }
 
