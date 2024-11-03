@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
 using workHome.Data;
 using workHome.Models;
+using workHome.Services;
 
 namespace workHome.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BattleController : ControllerBase
+    public class BattleController : ControllerBase, IBattleControlers
     {
         private readonly AppDbContext _context;
 
