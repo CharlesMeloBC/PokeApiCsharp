@@ -13,6 +13,7 @@ VS Net 8.0.10
 
 ## 🛠️ Construído com
 C# 
+SQL Server
 
 ## ✒️ Autores
 Charles Melo 
