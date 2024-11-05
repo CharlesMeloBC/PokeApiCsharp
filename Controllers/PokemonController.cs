@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using workHome.Data;
 using workHome.Models;
-using workHome.Services;
 
 namespace workHome.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PokemonController : ControllerBase, IPokemonControlers
+    public class PokemonController : ControllerBase
     {
         private readonly AppDbContext _context;
 
@@ -16,9 +16,9 @@ namespace workHome.Controllers
         {
             _context = context;
         }
-
-        [HttpGet("Id {id}")]
-        public async Task<ActionResult<object>> GetPokemonId(int id)
+        [Authorize(Policy = "TreinadorPolicy, ProfessorPolicy")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PokemonModel>> GetPokemonId(int id)
         {
             var pokemon = await _context.pokemons.FirstOrDefaultAsync(p => p.Id == id);
 
@@ -27,22 +27,20 @@ namespace workHome.Controllers
                 return NotFound();
             }
             return Ok(pokemon);
-
         }
-
-        [HttpGet("Name {Name}")]
-        public async Task<ActionResult<object>> GetPokemonName(string Name)
+        [Authorize(Policy = "TreinadorPolicy, ProfessorPolicy")]
+        [HttpGet("name/{name}")]
+        public async Task<ActionResult<PokemonModel>> GetPokemonName(string name)
         {
-            var pokemon = await _context.pokemons.FirstOrDefaultAsync(p => p.Name == Name);
+            var pokemon = await _context.pokemons.FirstOrDefaultAsync(p => p.Name == name);
 
             if (pokemon == null)
             {
                 return NotFound();
             }
             return Ok(pokemon);
-
         }
-
+        [Authorize(Policy = "ProfessorPolicy")]
         [HttpPost]
         public async Task<ActionResult<PokemonDto>> CreatePokemon([FromBody] PokemonDto pokemonDto)
         {
@@ -54,19 +52,16 @@ namespace workHome.Controllers
                 return BadRequest("Dados do Pokémon estão incompletos.");
             }
 
-            // Mapeamento de PokemonDto para PokemonModel
             var pokemon = new PokemonModel(
                 pokemonDto.Name,
                 pokemonDto.Skills,
                 pokemonDto.Url
-                );
+            );
 
             _context.pokemons.Add(pokemon);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetPokemonId), new { id = pokemon.Id }, pokemonDto);
         }
-
-
     }
 }
