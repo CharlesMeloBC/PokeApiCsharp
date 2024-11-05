@@ -12,9 +12,9 @@ Execulte o Git em seu diretorio desejado e execulte git clone https://github.com
 VS Net 8.0.10
 
 ## 🛠️ Construído com
-C# 
-SQL Server
-Jwt
+[C#] 
+[SQL Server]
+[Jwt]
 
 ## ✒️ Autores
 Charles Melo 
