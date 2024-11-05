@@ -14,6 +14,7 @@ VS Net 8.0.10
 ## 🛠️ Construído com
 C# 
 SQL Server
+Jwt
 
 ## ✒️ Autores
 Charles Melo 
